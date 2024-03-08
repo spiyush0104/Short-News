@@ -8,7 +8,7 @@ import {
   Dimensions,
   StatusBar,
   TouchableOpacity,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
 } from 'react-native';
 import styles from '../../Style/styles';
 import {
@@ -21,7 +21,8 @@ import Swiper from 'react-native-swiper';
 const screenWidth = Dimensions.get('window').width;
 const Home = () => {
   const [posts, setPosts] = useState([]);
-  const [press , setpress] =useState (false);
+  const [press, setpress] = useState(false);
+  const [news , setNews]  = useState(false);
   const featchData = async () => {
     try {
       const reasponse = await axios.get('http://localhost:3000/posts');
@@ -31,8 +32,12 @@ const Home = () => {
       console.error(error);
     }
   };
-  const handleTouch=()=>{
-    setpress(!press)
+  const handleTouch = () => {
+    setpress(!press);
+  };
+
+  const handleNewsPress=()=>{
+    setNews(!news);
 
   }
   useEffect(() => {
@@ -43,64 +48,120 @@ const Home = () => {
     //  full page container
     //  full page container
     <View style={{flex: 1}}>
+       <StatusBar backgroundColor="#000000" barStyle="light-content" />
+
+      {press && (
+        <View
+          style={{
+            height: hp('7%'),
+            marginTop: hp('8%'),
+            width: wp('100%'),
+            display: 'flex',
+            flexDirection: 'row',
+            position: 'absolute',
+            zIndex: 9999,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'white',
+          }}>
+          <TouchableOpacity
+            style={{
+              height: hp('7%'),
+              width: wp('50%'),
+              justifyContent: 'center',
+              alignItems: 'center',
+              ...(!news && {
+                borderBottomWidth: 2,
+                borderBottomColor: '#1e90ff',
+              }),
+            }} onPress={handleNewsPress}>
+            <Text style={{textAlign: 'center', fontSize: 35}}>News</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{
+              height: hp('7%'),
+              width: wp('50%'),
+              justifyContent: 'center',
+              alignItems: 'center',
+              ...(news && {
+                borderBottomWidth: 2,
+                borderBottomColor: '#1e90ff',
+              }),
+            }} onPress={handleNewsPress}>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 35,
+                fontFamily: 'poppins',
+                fontWeight: '400',
+              }}>
+              Viral
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
       <Swiper
         horizontal={false}
         loop={true}
         showsButtons={false}
         showsPagination={false}>
         {posts.map(post => (
-           <TouchableWithoutFeedback onPress={handleTouch}>
-          <View style={styles.flex1_color}>
-            {/*  main news container */}
-            <View
-              style={{
-                marginTop: hp('8%'),
-                backgroundColor: 'black',
-                height: hp('80%'),
-              }}>
-              {/* image section start from here  */}
-
-              <View style={{height: hp('37%'), backgroundColor: 'green'}}>
-                <Image
-                  style={styles.image}
-                  source={{
-                    uri: post.image,
-                  }}
-                />
-              </View>
-              {/* this section for news */}
+          <TouchableWithoutFeedback onPress={handleTouch}>
+            <View style={styles.flex1_color}>
+              {/*  main news container */}
               <View
                 style={{
-                  height: hp('46%'),
-                  backgroundColor: '#f5f6fa',
+                  marginTop: hp('8%'),
+                  backgroundColor: 'black',
+                  height: hp('80%'),
                 }}>
-                {/* heading container start from here  */}
-                <View
-                  style={{height: hp('8%'), alignItems: 'center', padding: 7}}>
-                  <Text style={{fontSize: 22, fontWeight: '700'}}>
-                    {post.heading}
-                  </Text>
+                {/* image section start from here  */}
+
+                <View style={{height: hp('37%'), backgroundColor: 'green'}}>
+                  <Image
+                    style={styles.image}
+                    source={{
+                      uri: post.image,
+                    }}
+                  />
                 </View>
-                {/* news section */}
-                <View style={{height: hp('38%')}}>
-                  <Text
+                {/* this section for news */}
+                <View
+                  style={{
+                    height: hp('46%'),
+                    backgroundColor: '#f5f6fa',
+                  }}>
+                  {/* heading container start from here  */}
+                  <View
                     style={{
-                      fontFamily: 'poppins',
-                      fontSize: 21,
-                      padding: 10,
-                      fontWeight: '300',
+                      height: hp('8%'),
+                      alignItems: 'center',
+                      padding: 7,
                     }}>
-                    {post.news}
-                  </Text>
+                    <Text style={{fontSize: 22, fontWeight: '700'}}>
+                      {post.heading}
+                    </Text>
+                  </View>
+                  {/* news section */}
+                  <View style={{height: hp('38%')}}>
+                    <Text
+                      style={{
+                        fontFamily: 'poppins',
+                        fontSize: 21,
+                        padding: 10,
+                        fontWeight: '300',
+                      }}>
+                      {post.news}
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
-          </View>
           </TouchableWithoutFeedback>
         ))}
       </Swiper>
 
-      
       <View
         style={{
           display: 'flex',
@@ -108,70 +169,70 @@ const Home = () => {
           flexDirection: 'row',
           backgroundColor: 'white',
         }}>
-        {  press &&
-        <View style={{flexDirection: "row" }}>
-        <TouchableOpacity>
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: hp('10%'),
-              width: wp('25%'),
-            }}>
-            <Image
-              style={styles.bottomIcon}
-              source={require('../../photos/menu-outline.png')}
-            />
-            <Text style={styles.iconPadding}>Menu</Text>
+        {press && (
+          <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity>
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: hp('10%'),
+                  width: wp('25%'),
+                }}>
+                <Image
+                  style={styles.bottomIcon}
+                  source={require('../../photos/menu-outline.png')}
+                />
+                <Text style={styles.iconPadding}>Menu</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: hp('10%'),
+                  width: wp('25%'),
+                }}>
+                <Image
+                  style={styles.bottomIcon}
+                  source={require('../../photos/search-outline.png')}
+                />
+                <Text style={styles.iconPadding}>Search</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: hp('10%'),
+                  width: wp('25%'),
+                }}>
+                <Image
+                  style={styles.bottomIcon}
+                  source={require('../../photos/eye-off-outline.png')}
+                />
+                <Text style={styles.iconPadding}>Unread</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: hp('10%'),
+                  width: wp('25%'),
+                }}>
+                <Image
+                  style={styles.bottomIcon}
+                  source={require('../../photos/refresh-outline.png')}
+                />
+                <Text style={styles.iconPadding}>Reload</Text>
+              </View>
+            </TouchableOpacity>
           </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: hp('10%'),
-              width: wp('25%'),
-            }}>
-            <Image
-              style={styles.bottomIcon}
-              source={require('../../photos/search-outline.png')}
-            />
-            <Text style={styles.iconPadding}>Search</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: hp('10%'),
-              width: wp('25%'),
-            }}>
-            <Image
-              style={styles.bottomIcon}
-              source={require('../../photos/eye-off-outline.png')}
-            />
-            <Text style={styles.iconPadding}>Unread</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: hp('10%'),
-              width: wp('25%'),
-            }}>
-            <Image
-              style={styles.bottomIcon}
-              source={require('../../photos/refresh-outline.png')}
-            />
-            <Text style={styles.iconPadding}>Reload</Text>
-          </View>
-        </TouchableOpacity>
-        </View> 
-}
+        )}
       </View>
     </View>
   );
