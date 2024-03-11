@@ -6,6 +6,7 @@ import Root from '../Screens/Root';
 import SelectLanguage from '../Screens/SelectLanguage';
 import Home from '../Screens/Home';
 import MainScreen from '../Screens/Main';
+import searchScreen from '../Screens/Search';
 
 const Stack = createNativeStackNavigator();
 const Navigations = () => {
@@ -36,6 +37,13 @@ const Navigations = () => {
          <Stack.Screen
           name="MainScreen"
           component={MainScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="searchScreen"
+          component={searchScreen}
           options={{
             headerShown: false,
           }}

@@ -17,14 +17,23 @@ import {
 } from 'react-native-responsive-screen';
 import axios from 'react-native-axios';
 import Swiper from 'react-native-swiper';
+import { useNavigation } from '@react-navigation/native';
+import searchScreen from '../Search';
 
 const screenWidth = Dimensions.get('window').width;
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [press, setpress] = useState(false);
   const [news , setNews]  = useState(false);
+  const [reload , setreload ] = useState(false);
+
+  const navigation = useNavigation();
+
+
   const featchData = async () => {
+
     try {
+
       const reasponse = await axios.get('http://localhost:3000/posts');
       setPosts(reasponse.data);
       console.log('reasponse===>', reasponse.data);
@@ -38,11 +47,30 @@ const Home = () => {
 
   const handleNewsPress=()=>{
     setNews(!news);
+  };
 
-  }
+    const handleSearchPress=()=>{
+      navigation.navigate('searchScreen')
+    }
+
+    
+    
+
+    const handleReload=()=>{
+      setreload(true);
+      featchData();
+      setreload(false);
+
+    }
+    const handleMenuPress=()=>{
+      navigation.navigate('MainScreen')
+    }
+
   useEffect(() => {
+    
     featchData();
   }, []);
+  
 
   return (
     //  full page container
@@ -171,7 +199,7 @@ const Home = () => {
         }}>
         {press && (
           <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleMenuPress}>
               <View
                 style={{
                   justifyContent: 'center',
@@ -186,7 +214,7 @@ const Home = () => {
                 <Text style={styles.iconPadding}>Menu</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleSearchPress}>
               <View
                 style={{
                   justifyContent: 'center',
@@ -216,7 +244,7 @@ const Home = () => {
                 <Text style={styles.iconPadding}>Unread</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleReload}>
               <View
                 style={{
                   justifyContent: 'center',

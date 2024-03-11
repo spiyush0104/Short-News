@@ -65,6 +65,15 @@ const styles = StyleSheet.create({
   },
   iconPadding:{
     padding:5
+  },
+  hour:{
+    height: hp('5%'),
+    width: wp('25%'),
+    borderWidth:0.3,
+    borderRadius:20,
+    justifyContent:'center',
+    alignItems:'center',
+    margin:3
   }
 });
 
