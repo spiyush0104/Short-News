@@ -17,26 +17,24 @@ import {
 } from 'react-native-responsive-screen';
 import axios from 'react-native-axios';
 import Swiper from 'react-native-swiper';
-import { useNavigation } from '@react-navigation/native';
-import searchScreen from '../Search';
+import {useNavigation} from '@react-navigation/native';
+import SearchScreen from '../Search';
 
 const screenWidth = Dimensions.get('window').width;
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [press, setpress] = useState(false);
-  const [news , setNews]  = useState(false);
-  const [reload , setreload ] = useState(false);
+  const [news, setNews] = useState(false);
+  const [reload, setreload] = useState(false);
 
   const navigation = useNavigation();
 
-
   const featchData = async () => {
-
     try {
-
-      const reasponse = await axios.get('http://localhost:3000/posts');
-      setPosts(reasponse.data);
-      console.log('reasponse===>', reasponse.data);
+      // const reasponse = await axios.get('http://localhost:3000/posts');
+      const reasponse = await axios.get('http://192.168.0.203:8000/api/v1/news/news-detail');
+      console.log('reasponse===>', reasponse.data.posts);
+      setPosts(reasponse.data.posts);
     } catch (error) {
       console.error(error);
     }
@@ -45,38 +43,32 @@ const Home = () => {
     setpress(!press);
   };
 
-  const handleNewsPress=()=>{
+  const handleNewsPress = () => {
     setNews(!news);
   };
 
-    const handleSearchPress=()=>{
-      navigation.navigate('searchScreen')
-    }
+  const handleSearchPress = () => {
+    navigation.navigate('SearchScreen');
+  };
 
-    
-    
-
-    const handleReload=()=>{
-      setreload(true);
-      featchData();
-      setreload(false);
-
-    }
-    const handleMenuPress=()=>{
-      navigation.navigate('MainScreen')
-    }
+  const handleReload = () => {
+    setreload(true);
+    featchData();
+    setreload(false);
+  };
+  const handleMenuPress = () => {
+    navigation.navigate('MainScreen');
+  };
 
   useEffect(() => {
-    
     featchData();
   }, []);
-  
 
   return (
     //  full page container
     //  full page container
     <View style={{flex: 1}}>
-       <StatusBar backgroundColor="#000000" barStyle="light-content" />
+      <StatusBar backgroundColor="#000000" barStyle="light-content" />
 
       {press && (
         <View
@@ -102,7 +94,8 @@ const Home = () => {
                 borderBottomWidth: 2,
                 borderBottomColor: '#1e90ff',
               }),
-            }} onPress={handleNewsPress}>
+            }}
+            onPress={handleNewsPress}>
             <Text style={{textAlign: 'center', fontSize: 35}}>News</Text>
           </TouchableOpacity>
 
@@ -116,7 +109,8 @@ const Home = () => {
                 borderBottomWidth: 2,
                 borderBottomColor: '#1e90ff',
               }),
-            }} onPress={handleNewsPress}>
+            }}
+            onPress={handleNewsPress}>
             <Text
               style={{
                 textAlign: 'center',
@@ -134,8 +128,8 @@ const Home = () => {
         loop={true}
         showsButtons={false}
         showsPagination={false}>
-        {posts.map(post => (
-          <TouchableWithoutFeedback onPress={handleTouch}>
+        {posts?.map(post => (
+          <TouchableWithoutFeedback onPress={handleTouch} key={post.id}>
             <View style={styles.flex1_color}>
               {/*  main news container */}
               <View

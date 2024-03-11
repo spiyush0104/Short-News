@@ -233,7 +233,7 @@ const MainScreen = () => {
       {/* list section start */}
 
       {CategoriesArrays.map(category => (
-        <View
+        <View key={category.id}
           style={{
             height: hp('5%'),
             paddingLeft: wp('6%'),

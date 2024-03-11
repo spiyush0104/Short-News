@@ -18,7 +18,7 @@ import styles from '../../Style/styles';
 import { useNavigation } from '@react-navigation/native';
 import Home from '../Home';
 
-const searchScreen = () => {
+const SearchScreen = () => {
   const navigation = useNavigation();
   const hourArray = [
     {
@@ -252,7 +252,7 @@ const searchScreen = () => {
           {/* scrollview start from here  */}
           <ScrollView>
             {CategoriesArrays.map(category => (
-              <View
+              <TouchableOpacity
                 key={category.id}
                 style={{
                   height: hp('5%'),
@@ -298,7 +298,7 @@ const searchScreen = () => {
                     source={require('../../photos/chevron-forward-outline.png')}
                   />
                 </View>
-              </View>
+              </TouchableOpacity>
             ))}
           </ScrollView>
         </View>
@@ -307,4 +307,4 @@ const searchScreen = () => {
   );
 };
 
-export default searchScreen;
+export default SearchScreen;

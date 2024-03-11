@@ -6,13 +6,13 @@ import Root from '../Screens/Root';
 import SelectLanguage from '../Screens/SelectLanguage';
 import Home from '../Screens/Home';
 import MainScreen from '../Screens/Main';
-import searchScreen from '../Screens/Search';
+import SearchScreen from '../Screens/Search';
 
 const Stack = createNativeStackNavigator();
 const Navigations = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Root">
+    <NavigationContainer >
+      <Stack.Navigator initialRouteName="Root" >
         <Stack.Screen
           name="Root"
           component={Root}
@@ -42,8 +42,8 @@ const Navigations = () => {
           }}
         />
         <Stack.Screen
-          name="searchScreen"
-          component={searchScreen}
+          name="SearchScreen"
+          component={SearchScreen}
           options={{
             headerShown: false,
           }}
