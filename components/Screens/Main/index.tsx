@@ -16,6 +16,7 @@ import {
 } from 'react-native-responsive-screen';
 import Home from '../Home';
 import {useNavigation} from '@react-navigation/native';
+import SettingsComp from '../Settings';
 const Drawer = createDrawerNavigator();
 
 const MainScreen = () => {
@@ -81,6 +82,10 @@ const MainScreen = () => {
 
   navigation.navigate('SelectLanguage')
   }
+
+  const handleSettingPress=()=>{
+    navigation.navigate('SettingsComp')
+  }
   return (
     <View style={{flex: 1}}>
       <View
@@ -92,7 +97,7 @@ const MainScreen = () => {
           borderBottomWidth: 0.1,
           ...shadowStyle,
         }}>
-        <TouchableOpacity
+        <TouchableOpacity onPress={handleSettingPress}
           style={{justifyContent: 'center', paddingLeft: wp('6%')}}>
           <Image
             style={{height: 25, width: 25}}
@@ -223,7 +228,7 @@ const MainScreen = () => {
         <Text style={{fontSize: 20, paddingTop: 10}}>Categories</Text>
         <ScrollView horizontal={true} style={{paddingTop: hp('4%')}}>
           {CategoriesArrays.map(category => (
-            <View style={{height: hp('10%'), width: wp('25%')}}>
+            <View key={category.id} style={{height: hp('10%'), width: wp('25%')}}>
               <Image style={{height: 40, width: 40}} source={category.image} />
               <Text style={{paddingTop: hp('0.7%')}}>{category.title}</Text>
             </View>

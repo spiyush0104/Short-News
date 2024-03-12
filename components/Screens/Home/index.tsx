@@ -9,6 +9,7 @@ import {
   StatusBar,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  ActivityIndicator,
 } from 'react-native';
 import styles from '../../Style/styles';
 import {
@@ -26,15 +27,18 @@ const Home = () => {
   const [press, setpress] = useState(false);
   const [news, setNews] = useState(false);
   const [reload, setreload] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
 
   const featchData = async () => {
     try {
-      // const reasponse = await axios.get('http://localhost:3000/posts');
-      const reasponse = await axios.get('http://192.168.0.203:8000/api/v1/news/news-detail');
-      console.log('reasponse===>', reasponse.data.posts);
-      setPosts(reasponse.data.posts);
+      const reasponse = await axios.get('http://localhost:3000/posts');
+      // setPosts(reasponse.data);
+
+      // const reasponse = await axios.get('http://192.168.0.203:8000/api/v1/news/news-detail');
+      console.log('reasponse===>', reasponse);
+      setPosts(reasponse.data);
     } catch (error) {
       console.error(error);
     }
@@ -51,10 +55,13 @@ const Home = () => {
     navigation.navigate('SearchScreen');
   };
 
-  const handleReload = () => {
-    setreload(true);
-    featchData();
-    setreload(false);
+  const handleReload = async () => {
+    setPosts([]);
+    setLoading(true);
+    setTimeout(() => {
+      featchData();
+      setLoading(false);
+    }, 1000);
   };
   const handleMenuPress = () => {
     navigation.navigate('MainScreen');
@@ -123,65 +130,81 @@ const Home = () => {
           </TouchableOpacity>
         </View>
       )}
+      {
+        <>
+          {loading && (
+            <View
+              style={{
+                position: 'absolute',
+                top: '50%',
+                left: '48%',
+                zIndex: 999,
+              }}>
+              <ActivityIndicator size="large" color="black" />
+            </View>
+          )}
+        </>
+      }
       <Swiper
         horizontal={false}
         loop={true}
         showsButtons={false}
         showsPagination={false}>
-        {posts?.map(post => (
-          <TouchableWithoutFeedback onPress={handleTouch} key={post.id}>
-            <View style={styles.flex1_color}>
-              {/*  main news container */}
-              <View
-                style={{
-                  marginTop: hp('8%'),
-                  backgroundColor: 'black',
-                  height: hp('80%'),
-                }}>
-                {/* image section start from here  */}
-
-                <View style={{height: hp('37%'), backgroundColor: 'green'}}>
-                  <Image
-                    style={styles.image}
-                    source={{
-                      uri: post.image,
-                    }}
-                  />
-                </View>
-                {/* this section for news */}
+        {!!posts &&
+          posts?.map(post => (
+            <TouchableWithoutFeedback onPress={handleTouch} key={post.id}>
+              <View style={styles.flex1_color}>
+                {/*  main news container */}
                 <View
                   style={{
-                    height: hp('46%'),
-                    backgroundColor: '#f5f6fa',
+                    marginTop: hp('8%'),
+                    backgroundColor: 'black',
+                    height: hp('80%'),
                   }}>
-                  {/* heading container start from here  */}
+                  {/* image section start from here  */}
+
+                  <View style={{height: hp('37%'), backgroundColor: 'green'}}>
+                    <Image
+                      style={styles.image}
+                      source={{
+                        uri: post.image,
+                      }}
+                    />
+                  </View>
+                  {/* this section for news */}
                   <View
                     style={{
-                      height: hp('8%'),
-                      alignItems: 'center',
-                      padding: 7,
+                      height: hp('46%'),
+                      backgroundColor: '#f5f6fa',
                     }}>
-                    <Text style={{fontSize: 22, fontWeight: '700'}}>
-                      {post.heading}
-                    </Text>
-                  </View>
-                  {/* news section */}
-                  <View style={{height: hp('38%')}}>
-                    <Text
+                    {/* heading container start from here  */}
+                    <View
                       style={{
-                        fontFamily: 'poppins',
-                        fontSize: 21,
-                        padding: 10,
-                        fontWeight: '300',
+                        height: hp('8%'),
+                        alignItems: 'center',
+                        padding: 7,
                       }}>
-                      {post.news}
-                    </Text>
+                      <Text style={{fontSize: 22, fontWeight: '700'}}>
+                        {post.heading}
+                      </Text>
+                    </View>
+                    {/* news section */}
+                    <View style={{height: hp('38%')}}>
+                      <Text
+                        style={{
+                          fontFamily: 'poppins',
+                          fontSize: 21,
+                          padding: 10,
+                          fontWeight: '300',
+                        }}>
+                        {post.news}
+                      </Text>
+                    </View>
                   </View>
                 </View>
               </View>
-            </View>
-          </TouchableWithoutFeedback>
-        ))}
+            </TouchableWithoutFeedback>
+          ))}
       </Swiper>
 
       <View
