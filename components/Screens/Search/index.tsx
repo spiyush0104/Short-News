@@ -65,6 +65,7 @@ const SearchScreen = () => {
       id: 2,
       image: require('../../photos/magzine.png'),
       title: 'magazine',
+
     },
     {
       id: 3,
@@ -101,6 +102,9 @@ const SearchScreen = () => {
   const handleBackPress=()=>{
     navigation.goBack();
     
+  }
+  const handleCategoriesPress=()=>{
+
   }
   return (
     <View style={{flex: 1}}>
@@ -259,7 +263,7 @@ const SearchScreen = () => {
                   alignContent: 'center',
                   flexDirection: 'row',
                   borderBottomWidth: 0.2,
-                }}>
+                }} onPress={handleCategoriesPress}>
                 <View style={{justifyContent: 'center'}}>
                   <Image
                     style={{

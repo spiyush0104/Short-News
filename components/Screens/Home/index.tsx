@@ -25,7 +25,8 @@ const screenWidth = Dimensions.get('window').width;
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [press, setpress] = useState(false);
-  const [news, setNews] = useState(false);
+  const [news, setNews] = useState(true);
+  const [viral , setviral ] =useState(false)
   const [reload, setreload] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -33,7 +34,15 @@ const Home = () => {
 
   const featchData = async () => {
     try {
-      const reasponse = await axios.get('http://localhost:3000/posts');
+      let reasponse;
+      if (news) {
+        reasponse = await axios.get('http://localhost:3000/posts');
+      } else {
+        reasponse = await axios.get('http://localhost:3000/comments');
+        console.log("hello");
+        
+      }
+
       // setPosts(reasponse.data);
 
       // const reasponse = await axios.get('http://192.168.0.203:8000/api/v1/news/news-detail');
@@ -47,21 +56,42 @@ const Home = () => {
     setpress(!press);
   };
 
-  const handleNewsPress = () => {
-    setNews(!news);
+  const handleNewsPress = async() => {
+    setviral(false);
+    setNews(true)
+
+   await setPosts([]);
+   await setLoading(true);
+    setTimeout(async() => {
+     await featchData();
+      setLoading(false);
+    }, 1000);
   };
+  const handleViralPress = async() => {
+    setNews(false);
+    setviral(true);
+    
+   await setPosts([]);
+   await setLoading(true);
+    setTimeout(async()=> {
+     await featchData();
+      setLoading(false);
+    }, 2000);
+  };
+
 
   const handleSearchPress = () => {
     navigation.navigate('SearchScreen');
   };
 
   const handleReload = async () => {
+
     setPosts([]);
     setLoading(true);
     setTimeout(() => {
       featchData();
       setLoading(false);
-    }, 1000);
+    }, 2000);
   };
   const handleMenuPress = () => {
     navigation.navigate('MainScreen');
@@ -97,7 +127,7 @@ const Home = () => {
               width: wp('50%'),
               justifyContent: 'center',
               alignItems: 'center',
-              ...(!news && {
+              ...(news && {
                 borderBottomWidth: 2,
                 borderBottomColor: '#1e90ff',
               }),
@@ -112,12 +142,12 @@ const Home = () => {
               width: wp('50%'),
               justifyContent: 'center',
               alignItems: 'center',
-              ...(news && {
+              ...(!news && {
                 borderBottomWidth: 2,
                 borderBottomColor: '#1e90ff',
               }),
             }}
-            onPress={handleNewsPress}>
+            onPress={handleViralPress}>
             <Text
               style={{
                 textAlign: 'center',
