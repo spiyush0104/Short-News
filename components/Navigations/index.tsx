@@ -8,11 +8,14 @@ import Home from '../Screens/Home';
 import MainScreen from '../Screens/Main';
 import SearchScreen from '../Screens/Search';
 import SettingsComp from '../Screens/Settings';
+import Login from '../Login';
+import SignUp from '../SingUp';
 const Stack = createNativeStackNavigator();
+
 const Navigations = () => {
   return (
-    <NavigationContainer >
-      <Stack.Navigator initialRouteName="Root" >
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Root">
         <Stack.Screen
           name="Root"
           component={Root}
@@ -34,7 +37,7 @@ const Navigations = () => {
             headerShown: false,
           }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="MainScreen"
           component={MainScreen}
           options={{
@@ -48,9 +51,24 @@ const Navigations = () => {
             headerShown: false,
           }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="SettingsComp"
           component={SettingsComp}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="SignUp"
+          component={SignUp}
           options={{
             headerShown: false,
           }}

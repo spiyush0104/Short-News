@@ -33,13 +33,24 @@ const Home = () => {
   const navigation = useNavigation();
 
   const featchData = async () => {
-    try {
       let reasponse;
       if (news) {
+        console.log("before api hit ::;");
+        
         reasponse = await axios.get('http://localhost:3000/posts');
+        console.log("reasponse of api-======>",reasponse);
+        
       } else {
-        reasponse = await axios.get('http://localhost:3000/comments');
-        console.log("hello");
+        console.log("before api hit line 444");
+        
+        try {
+          reasponse = await axios.get('http://localhost:3000/comments');
+          console.log("reasponse of api-======>",reasponse);
+          console.log("hello");
+        } catch (error) {
+          console.log("api-error ::",error);
+          
+        }
         
       }
 
@@ -48,9 +59,7 @@ const Home = () => {
       // const reasponse = await axios.get('http://192.168.0.203:8000/api/v1/news/news-detail');
       console.log('reasponse===>', reasponse);
       setPosts(reasponse.data);
-    } catch (error) {
-      console.error(error);
-    }
+    
   };
   const handleTouch = () => {
     setpress(!press);
@@ -98,11 +107,12 @@ const Home = () => {
   };
 
   useEffect(() => {
+    console.log("in use effectttt======>");
+    
     featchData();
   }, []);
 
   return (
-    //  full page container
     //  full page container
     <View style={{flex: 1}}>
       <StatusBar backgroundColor="#000000" barStyle="light-content" />

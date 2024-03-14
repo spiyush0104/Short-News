@@ -86,6 +86,10 @@ const MainScreen = () => {
   const handleSettingPress=()=>{
     navigation.navigate('SettingsComp')
   }
+
+  const storename=()=>{
+    
+  }
   return (
     <View style={{flex: 1}}>
       <View
@@ -151,6 +155,7 @@ const MainScreen = () => {
             style={{height: 20, fontSize: 18}}
             placeholder="enter your name"
             keyboardType="numeric"
+            onChange={storename}
           />
 
           <TextInput
