@@ -18,12 +18,11 @@ const SelectLanguage = () => {
     setLanguage(true);
     setTimeout(() => {
 
-      navigation.navigate('Home')
+      navigation.navigate("Home");
       
     },1000);
 
   };
-  
 
   // useEffect(()=>{
   //   if(setLanguage(true))
